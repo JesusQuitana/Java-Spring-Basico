@@ -51,4 +51,13 @@ public class Usuarios {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    @Override
+    public String toString() {
+        return "Usuarios{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", membresia=" + membresia +
+                '}';
+    }
 }

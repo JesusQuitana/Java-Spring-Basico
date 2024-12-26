@@ -10,7 +10,7 @@ import zona_fit.vista.ZonaFitApp;
 
 import javax.swing.*;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class ZonaFitAplication {
     public static void main(String[] args) {
         //Configurar el Modo Oscuro

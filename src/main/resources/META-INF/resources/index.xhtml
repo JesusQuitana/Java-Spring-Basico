@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<h:html xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Zona Fit</title>
+        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    </h:head>
+
+    <h:body>
+        <div class="card">
+            <h:form id="usuarios-form">
+                <p:growl id="mensajes" showDetail="true"/>
+
+                <div class="card">
+                    <!--                    Componente de Barra de Menu-->
+                    <p:menubar>
+                        <p:menuitem value="Inicio" icon="pi pi-fw pi-user" update="usuarios-form:usuarios-tabla"
+                                    actionListener="#{indexController.cargarDatos()}"/>
+                        <p:menuitem value="Agregar Usuario" icon="pi pi-fw pi-plus"
+                                    actionListener="#{indexController.agregarUsuario}"
+                                    update=":form-modal:usuario-ventana" oncomplete="PF('ventanaModalUsuario').show()"/>
+                    </p:menubar>
+                </div>
+
+                <div>
+                    <!-- Componente de DataTable para mostrar Informacion-->
+                    <p:dataTable value="#{indexController.usuarios}" var="usuario" id="usuarios-tabla"
+                                 widgetVar="usuariosTabla">
+                        <f:facet name="header">
+                            <div class="flex justify-content-center flex-wrap card-container yellow-container">
+                                <div class="flex align-items-center justify-content-center w-20rem h-4rem
+                                bg-yellow-500 font-bold text-gray-900 border-round m-2">
+                                    <h2>Zona Fit (Gym)</h2>
+                                </div>
+                            </div>
+                        </f:facet>
+
+                        <p:column headerText="ID">
+                            <h:outputText value="#{usuario.id}"/>
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{usuario.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Membresia">
+                            <h:outputText value="#{usuario.membresia}"/>
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="Editar" icon="pi pi-pencil" update=":form-modal:usuario-ventana"
+                                             process="@this" oncomplete="PF('ventanaModalUsuario').show()"
+                                             class="ui-button-primary" style="margin-right: .5rem">
+                            <f:setPropertyActionListener value="#{usuario}"
+                                                         target="#{indexController.usuarioSeleccionado}"/>
+                            <p:resetInput target=":form-modal:usuario-ventana"/>
+                            </p:commandButton>
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="Elimnar" icon="pi pi-trash" class="ui-button-danger"
+                                             process="@this"
+                                             oncomplete="PF('eliminarUsuarioVentana').show()">
+                                <f:setPropertyActionListener value="#{usuario}"
+                                                             target="#{indexController.usuarioSeleccionado}"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </h:form>
+
+            <h:form id="form-modal">
+                <p:dialog header="Detalles Usuario" showEffect="fade" modal="true" widgetVar="ventanaModalUsuario"
+                          responsive="true">
+                    <p:outputPanel id="usuario-ventana" class="ui-fluid">
+                        <div class="field">
+                            <p:outputLabel for="nombre">Nombre</p:outputLabel>
+                            <p:inputText id="nombre" value="#{indexController.usuarioSeleccionado.nombre}"
+                                         required="true"/>
+                        </div>
+                    </p:outputPanel>
+                    <f:facet name="footer">
+                        <p:commandButton value="Guardar" icon="pi pi-check" process="usuario-ventana @this"
+                                         actionListener="#{indexController.guardarUsuario}"/>
+                        <p:commandButton value="Cancelar" icon="pi pi-times"
+                                         onclick="PF('ventanaModalUsuario').hide()" class="ui-button-secundary"
+                                         type="button"/>
+                    </f:facet>
+                </p:dialog>
+                <p:confirmDialog widgetVar="eliminarUsuarioVentana" showEffect="fade" width="300"
+                                 message="Desea Eliminar el Cliente?" header="Confirmar"
+                                 severity="warn">
+                    <p:commandButton value="Si" icon="pi pi-check"
+                                     actionListener="#{indexController.eliminarUsuario}" process="@this"
+                                     oncomplete="PF('eliminarUsuarioVentana').hide()"/>
+                    <p:commandButton value="No" icon="pi pi-times" styleClass="ui-button-secondary"
+                                     onclick="PF('eliminarUsuarioVentana').hide()"/>
+                </p:confirmDialog>
+            </h:form>
+        </div>
+    </h:body>
+
+</h:html>

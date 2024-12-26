@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Random;
 
-@Component
+//@Component
 public class ZonaFitApp extends JFrame {
     private JPanel pane;
     private JButton save;
